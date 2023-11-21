@@ -1,42 +1,35 @@
+package agh.ics.oop;
+import agh.ics.oop.model.*;
+import agh.ics.oop.model.util.*;
+
 import java.util.List;
 
 public class World {
-    public static void main(String[] args) {
-        System.out.println("System started");
+    public static void main (String[] args){
 
-        Animal animal = new Animal();
-        List<MoveDirection> moveAnimal = OptionParser.parse(args);
-        List<MoveDirection> directions = OptionParser.parse(args);
-        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        Simulation simulation = new Simulation(positions, directions);
-        simulation.run();
-        run(moveAnimal, animal);
-        Vector2d animalPosition = animal.getPosition();
-        System.out.println("Animal's position: " + animalPosition);
+        // Wyświetlamy całą mapę
+        //System.out.println(visualizer.draw(new Vector2d(0, 0), new Vector2d(9, 9)));
+        WorldMap map = new RectangularMap(10,10);
+        MapVisualizer visualizer = new MapVisualizer(map);
+        Animal animal1 = new Animal(new Vector2d(2,4));
+        Animal animal2 = new Animal(new Vector2d(5,7));
 
-        //Vector2d position1 = new Vector2d(1, 2);
-        //System.out.println(position1);
-        //Vector2d position2 = new Vector2d(-2, 1);
-        //System.out.println(position2);
-        //System.out.println(position1.add(position2));
-        //MapDirection direction = MapDirection.NORTH;
-        //System.out.println("Direction: " + direction);
-        //System.out.println("Next: " + direction.next());
-        //System.out.println("Previous: " + direction.previous());
-        //System.out.println("Unit Vector: " + direction.toUnitVector());
 
-        System.out.println("System finished");
-    }
+        animal1.move(MoveDirection.BACKWARD, map);
+        animal2.move(MoveDirection.BACKWARD, map);
+        animal2.move(MoveDirection.LEFT, map);
+        animal2.move(MoveDirection.FORWARD, map);
+        animal2.move(MoveDirection.FORWARD, map);
 
-    public static void run(List<MoveDirection> moveAnimal, Animal animal) {
-        for (MoveDirection moveDirection : moveAnimal) {
-            switch (moveDirection) {
-                case FORWARD -> animal.move(MoveDirection.FORWARD);
-                case BACKWARD -> animal.move(MoveDirection.BACKWARD);
-                case RIGHT -> animal.move(MoveDirection.RIGHT);
-                case LEFT -> animal.move(MoveDirection.LEFT);
-                default -> throw new IllegalStateException("Unexpected value: " + moveDirection);
-                }
-            }
-        }
-    }
+
+
+        map.place(animal1);
+        map.place(animal2);
+
+        System.out.println("Movement status:");
+        System.out.println(visualizer.draw(new Vector2d(0, 0), new Vector2d(9, 9)));
+
+    };
+}
+
+
